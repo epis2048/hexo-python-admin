@@ -1,0 +1,99 @@
+{% extends "app/layout.html" %} {% block content %}
+
+<section class="content-header">
+    <h1>
+        页面管理
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'index' %}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        <li>
+            <a href="{% url 'page_index' %}"> 页面管理</a>
+        </li>
+    </ol>
+</section>
+<section class="content">
+    <div class="pull-right"></div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">所有
+                <small> (
+                    <a href="{% url 'page_add' %}?type=page">添加页面</a>
+                    )</small>
+            </h3>
+        </div>
+        </br>
+        <div class="box-body no-padding">
+            <table id="allitem" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>链接</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in pageinfo %}
+                    <tr>
+                        <td>
+                            {{row.0}}
+                        </td>
+                        <td>
+                            {{row.2}}
+                        </td>
+                        <td>
+                            {{row.1}}
+                        </td>
+                        <td>
+                            <a href="{% url 'blog_detail' %}?id={{row.2}}&type=page">编辑</a> /
+                            <a href="javascript:checkdelpage('{{row.2}}')" style="color:red">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>名称</th>
+                        <th>作者</th>
+                        <th>链接</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</section>
+{%csrf_token %}
+<script>
+    function checkdelpage(fid) {
+        if (confirm("您确定删除'" + fid + "'吗？此操作不可恢复请谨慎操作") == true) {
+            delpage(fid);
+        };
+    }
+
+    function delpage(fid) {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_page_del' %}?type=published",
+            {
+                fid: fid,
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('删除成功！');
+                    window.location.href = '';
+                }
+                else {
+                    ShowMessage('删除失败！')
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+
+    }
+
+</script> {% endblock %}

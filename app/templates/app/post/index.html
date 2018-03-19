@@ -1,0 +1,104 @@
+{% extends "app/layout.html" %} {% block content %}
+<section class="content-header">
+    <h1>
+        文章管理
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'index' %}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        <li>
+            <a href="{% url 'blog_index' %}"> 文章管理</a>
+        </li>
+    </ol>
+</section>
+<section class="content">
+    <div class="pull-right"></div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">已发布
+                <small> (
+                    <a href="{% url 'blog_index' %}">已发布</a> /
+                    <a href="{% url 'blog_drafts' %}">草稿</a> /
+                    <a href="{% url 'blog_add' %}?type=blog">写文章</a>
+                    )</small>
+            </h3>
+        </div>
+        </br>
+        <div class="box-body no-padding">
+            <table id="allitem" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>作者</th>
+                        <th>链接</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in bloginfo %}
+                    <tr>
+                        <td>
+                            {{row.0}}
+                        </td>
+                        <td>
+                            {{row.1}}
+                        </td>
+                        <td>
+                            {{row.2}}
+                        </td>
+                        <td>
+                            {{row.3}}
+                        </td>
+                        <td>
+                            <a href="{% url 'blog_detail' %}?id={{row.2}}&type=published">编辑</a> /
+                            <a href="javascript:checkdelblog('{{row.2}}')" style="color:red">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>名称</th>
+                        <th>作者</th>
+                        <th>链接</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</section>
+{%csrf_token %}
+<script>
+    function checkdelblog(fid) {
+        if (confirm("您确定删除'" + fid + "'吗？此操作不可恢复请谨慎操作") == true) {
+            delblog(fid);
+        };
+    }
+
+    function delblog(fid) {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_del' %}?type=published",
+            {
+                fid: fid,
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('删除成功！');
+                    window.location.href = '';
+                }
+                else {
+                    ShowMessage('删除失败！')
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+
+    }
+
+</script> {% endblock %}

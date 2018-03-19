@@ -1,0 +1,196 @@
+{% extends "app/layout.html" %} {% block content %}
+<section class="content-header">
+    <h1>
+        文章管理
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'index' %}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        {% if type == 'drafts' %}
+        <li>
+            <a href="{% url 'blog_index' %}"> 文章管理</a>
+        </li>
+        <li>
+            <a href="{% url 'blog_drafts' %}"> 草稿箱</a>
+        </li>
+        <li>
+            <a href="{% url 'blog_detail' %}?id={{fid}}&type={{type}}"> 编辑草稿</a>
+        </li>
+        {% elif type == 'page' %}
+        <li>
+            <a href="{% url 'page_index' %}"> 页面管理</a>
+        </li>
+        <li>
+            <a href="{% url 'blog_detail' %}?id={{fid}}&type={{type}}"> 编辑页面</a>
+        </li>
+        {% elif type == 'published' %}
+        <li>
+            <a href="{% url 'blog_index' %}"> 文章管理</a>
+        </li>
+        <li>
+            <a href="{% url 'blog_detail' %}?id={{fid}}&type={{type}}"> 编辑文章</a>
+        </li>
+        {% endif %}
+    </ol>
+</section>
+<section class="content">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs  pull-right">
+            <li class="active">
+                <a href="#content" data-toggle="tab">内容</a>
+            </li>
+            <li>
+                <a href="#settings" data-toggle="tab">设置</a>
+            </li>
+            <li class="pull-left header"> 编辑 -
+                <span id='ptitle'>{{pinfo.0}}</span>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="active tab-pane" id="content">
+                <div id="editormd">
+                    <textarea style="display:none;">{{text}}</textarea>
+                </div>
+            </div>
+            <div class="tab-pane" id="settings">
+                <table id="editinfo" class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>标题:</td>
+                            <td>
+                                <input type="text" class="form-control" id="title" placeholder="" value="{{pinfo.0}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>作者:</td>
+                            <td>
+                                <input type="text" class="form-control" id="author" placeholder="" value="{{pinfo.1}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>时间:</td>
+                            <td>
+                                <input type="text" class="form-control" id="time" placeholder="" value="{{pinfo.2}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <a href="javascript:editinfo();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
+                                    提交</a>
+                                {% if type == 'drafts' %}
+                                <a href="javascript:publish();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
+                                    发布</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+{%csrf_token %}
+<script>
+    var Editor;
+    var ischeck = true;
+    var oldValue = '';
+
+    Editor = editormd("editormd", {
+        width: "90%",
+        height: 640,
+        syncScrolling: "single",
+        path: "{{staticurl}}/hexo/editor.md/lib/",
+        onchange: function () {
+            if (ischeck == true) {
+                onmdchange();
+            }
+        },
+        onload: function () {
+            oldValue = this.getValue();
+        }
+    });
+
+    function onmdchange() {
+        window.setInterval('checkInput();', 2000);
+        ischeck = false;
+    }
+
+    function checkInput() {
+        var newValue = Editor.getValue();
+        if (newValue != oldValue) {
+            updatepost();
+        }
+        oldValue = newValue;
+    }
+
+    function updatepost() {
+        var value = Editor.getValue();
+        var fid = '{{fid}}';
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_content' %}?type={{type}}",
+            {
+                fid: fid,
+                value: encodeURI(value),
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                }
+                else {
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+    }
+
+    function editinfo() {
+        var fid = '{{fid}}';
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_info' %}?type={{type}}",
+            {
+                fid: fid,
+                title: encodeURI($('#title').val()),
+                author: encodeURI($('#author').val()),
+                time: encodeURI($('#time').val()),
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('修改成功！');
+                    $('#ptitle').html($('#title').val());
+                }
+                else {
+                    ShowMessage('修改失败！')
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+    }
+    {% if type == 'drafts' %}
+    function publish() {
+        var fid = '{{fid}}';
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_publish' %}",
+            {
+                fid: fid,
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('发布成功！');
+                    window.location.href = '{% url 'blog_detail' %}?id=' + fid;
+                }
+                else {
+                    ShowMessage('发布失败！')
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+    }
+    {% endif %}
+
+</script> {% endblock %}

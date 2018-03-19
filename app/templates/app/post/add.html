@@ -1,0 +1,90 @@
+{% extends "app/layout.html" %} {% block content %}
+<section class="content-header">
+    <h1>
+        文章管理
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'index' %}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        <li>
+            <a href="{% url 'blog_index' %}"> 文章管理</a>
+        </li>
+        <li>
+            <a href="{% url 'blog_add' %}"> 写文章</a>
+        </li>
+    </ol>
+</section>
+<section class="content">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs  pull-right">
+            <li class="active">
+                <a href="#content" data-toggle="tab">信息</a>
+            </li>
+            <li class="pull-left header"> 写文章
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="active tab-pane" id="content">
+                <table id="editinfo" class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>标题:</td>
+                            <td>
+                                <input type="text" class="form-control" id="title" placeholder="" value="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>作者:</td>
+                            <td>
+                                <input type="text" class="form-control" id="author" placeholder="" value="{{author}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>文件名:</td>
+                            <td>
+                                <input type="text" class="form-control" id="filename" placeholder="" value="xxx.md">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <a href="javascript:addblog();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
+                                    提交</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+{%csrf_token%}
+<script>
+
+    function addblog() {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_add' %}",
+            {
+                title: encodeURI($('#title').val()),
+                author: encodeURI($('#author').val()),
+                filename: encodeURI($('#filename').val()),
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('添加成功！请到草稿箱查看');
+                    window.location.href = "{% url 'blog_drafts' %}";
+                }
+                else {
+                    ShowMessage('添加失败！')
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+    }
+
+
+</script> {% endblock %}
