@@ -41,6 +41,11 @@
             <li class="active">
                 <a href="#content" data-toggle="tab">内容</a>
             </li>
+            {% if type == 'published' or type == 'drafts' %}
+            <li>
+                <a href="#tags" data-toggle="tab">标签&分类</a>
+            </li>
+            {% endif %}
             <li>
                 <a href="#settings" data-toggle="tab">设置</a>
             </li>
@@ -54,6 +59,55 @@
                     <textarea style="display:none;">{{text}}</textarea>
                 </div>
             </div>
+            {% if type == 'published' or type == 'drafts' %}
+            <div class="tab-pane" id="tags">
+                <table width="100%">
+                    <td width="49%" valign="top">
+                        <table id="" class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>标签</b>
+                                    </td>
+                                </tr>
+                                {% for row in tags %}
+                                <tr>
+                                    <td>{{row}} (<a href="javascript:checkdeltag('{{row}}')" style="color:red;">删除</a>)</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td>
+                                        <a href="javascript:showaddtag()">添加</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td width="2%"></td>
+                    <td width="49%" valign="top">
+                        <table id="" class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>分类</b>
+                                    </td>
+                                </tr>
+                                {% for row in catecories %}
+                                <tr>
+                                    <td>{{row}} (<a href="javascript:checkdelcate('{{row}}')" style="color:red;">删除</a>)</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td>
+                                        <a href="javascript:showaddcate()">添加</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </table>
+            </div>
+            {% endif %}
             <div class="tab-pane" id="settings">
                 <table id="editinfo" class="table table-hover">
                     <tbody>
@@ -182,7 +236,7 @@
             function (data, status) {
                 if (data == 'success') {
                     ShowMessage('发布成功！');
-                    window.location.href = '{% url 'blog_detail' %}?id=' + fid;
+                    window.location.href = '';
                 }
                 else {
                     ShowMessage('发布失败！')
@@ -191,6 +245,135 @@
             }
         );
     }
+    {% endif %}
+
+    {% if type == 'published' or type == 'drafts' %}
+    function showaddtag() {
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            closeBtn: 1, //显示关闭按钮
+            anim: 2,
+            title:'添加标签',
+            area:"40%",
+            shadeClose: true, //开启遮罩关闭
+            content: '<input class="form-control" type="text" id="tagname" style="width:100%" placeholder="请输入标签名称"><input type="button" class="btn btn-primary btn-block btn-flat" onclick="addtag()" value="添加" />'
+        });
+    }
+
+    function addtag(){
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_tag_add' %}",
+            {
+                tagname: encodeURI($('#tagname').val()),
+                fid: '{{fid}}',
+                type: '{{type}}',
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('添加成功！');
+                    window.location.href = '';
+                }
+                else {
+                    ShowMessage('添加失败！');
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+    }
+
+    function checkdeltag(tagname){
+        if (confirm("您确定删除'" + tagname + "'吗？此操作不可恢复请谨慎操作") == true) {
+            deltag(tagname);
+        };
+    }
+
+    function deltag(tagname){
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_tag_del' %}",
+            {
+                tagname: encodeURI(tagname),
+                fid: '{{fid}}',
+                type: '{{type}}',
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('删除成功！');
+                    window.location.href = '';
+                }
+                else {
+                    ShowMessage('删除失败！');
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+    }
+
+    function showaddcate() {
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            closeBtn: 1, //显示关闭按钮
+            anim: 2,
+            title:'添加分类',
+            area:"40%",
+            shadeClose: true, //开启遮罩关闭
+            content: '<input class="form-control" type="text" id="tagname" style="width:100%" placeholder="请输入分类名称"><input type="button" class="btn btn-primary btn-block btn-flat" onclick="addcate()" value="添加" />'
+        });
+    }
+
+    function addcate(){
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_cate_add' %}",
+            {
+                catename: encodeURI($('#tagname').val()),
+                fid: '{{fid}}',
+                type: '{{type}}',
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('添加成功！');
+                    window.location.href = '';
+                }
+                else {
+                    ShowMessage('添加失败！');
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+    }
+
+    function checkdelcate(catename){
+        if (confirm("您确定删除'" + catename + "'吗？此操作不可恢复请谨慎操作") == true) {
+            delcate(catename);
+        };
+    }
+
+    function delcate(catename){
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_cate_del' %}",
+            {
+                catename: encodeURI(catename),
+                fid: '{{fid}}',
+                type: '{{type}}',
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('删除成功！');
+                    window.location.href = '';
+                }
+                else {
+                    ShowMessage('删除失败！');
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+    }
+
     {% endif %}
 
 </script> {% endblock %}
