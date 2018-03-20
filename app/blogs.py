@@ -261,7 +261,7 @@ def ajax_add(request):
     filename = unquote(str(request.POST.get('filename'))).decode('utf-8')
     date = str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) )
 
-    stext = 'title: ' + title +'\nauthor: ' + author + '\ndate: ' + date + '\ntags: []\ncategories: []\n---\n'
+    stext = 'title: ' + title +'\nauthor: ' + author + '\ndate: ' + date + '\ntags: \n\ncategories: \n\n---\n'
     SiteData = data.Site()
     path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + filename
 
@@ -323,7 +323,15 @@ def ajax_del(request):
         path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
     else:
         path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
-    
+    path2 = SiteData.getwebconf('HexoDir') + '\\source\\_trash\\' + fid
+    lines = ''
+
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            lines += line.decode('utf-8')
+    with open(path2, 'w') as f:
+        f.write(lines.encode('utf-8'))
+
     os.remove(path)
     success = True
 
@@ -336,3 +344,204 @@ def ajax_del(request):
             'msg':msg,
         }
     )
+
+def ajax_tag_add(request):
+    msg = ''
+    success = False
+    SiteData = data.Site()
+    HexoData = data.Data()
+
+    fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
+    tagname = unquote(str(request.POST.get('tagname'))).decode('utf-8')
+    type = unquote(str(request.POST.get('type'))).decode('utf-8')
+    if type == 'published':
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+    elif type == 'drafts':
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+    else:
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+    lines = []
+    tname = '  - ' + tagname + '\n'
+
+    with open(path, 'r') as f:
+        istag = False
+        for line in f.readlines():
+            if istag == True:
+                lines.append(tname)
+                istag = False
+            elif line[0:5] == 'tags:':
+                istag = True
+            lines.append(line.decode('utf-8'))
+
+    at = ''
+    for line in lines:
+        at += line
+    
+    with open(path, 'w') as f:
+        f.write(at.encode('utf-8'))
+    
+    success = True   
+
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/ajax.html',
+        {
+            'success':success,
+            'msg':msg,
+        }
+    )
+
+def ajax_tag_del(request):
+    msg = ''
+    success = False
+    SiteData = data.Site()
+    HexoData = data.Data()
+
+    fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
+    tagname = unquote(str(request.POST.get('tagname'))).decode('utf-8')
+    type = unquote(str(request.POST.get('type'))).decode('utf-8')
+    if type == 'published':
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+    elif type == 'drafts':
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+    else:
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+    lines = []
+    tname = '  - ' + tagname + '\n'
+
+    with open(path, 'r') as f:
+        istag = False
+        for line in f.readlines():
+            if istag == True:
+                if line.decode('utf-8') == tname:
+                    istag = False
+                else:
+                    lines.append(line.decode('utf-8'))
+            elif line[0:5] == 'tags:':
+                istag = True
+                lines.append(line.decode('utf-8'))
+            else:
+                lines.append(line.decode('utf-8'))
+
+    at = ''
+    for line in lines:
+        at += line
+    
+    with open(path, 'w') as f:
+        f.write(at.encode('utf-8'))
+    
+    success = True   
+
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/ajax.html',
+        {
+            'success':success,
+            'msg':msg,
+        }
+    )
+
+def ajax_cate_add(request):
+    msg = ''
+    success = False
+    SiteData = data.Site()
+    HexoData = data.Data()
+
+    fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
+    catename = unquote(str(request.POST.get('catename'))).decode('utf-8')
+    type = unquote(str(request.POST.get('type'))).decode('utf-8')
+    if type == 'published':
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+    elif type == 'drafts':
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+    else:
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+    lines = []
+    tname = '  - ' + catename + '\n'
+
+    with open(path, 'r') as f:
+        istag = False
+        for line in f.readlines():
+            if istag == True:
+                lines.append(tname)
+                istag = False
+            elif line[0:11] == 'categories:':
+                istag = True
+            lines.append(line.decode('utf-8'))
+
+    at = ''
+    for line in lines:
+        at += line
+    
+    with open(path, 'w') as f:
+        f.write(at.encode('utf-8'))
+    
+    success = True   
+
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/ajax.html',
+        {
+            'success':success,
+            'msg':msg,
+        }
+    )
+
+def ajax_cate_del(request):
+    msg = ''
+    success = False
+    SiteData = data.Site()
+    HexoData = data.Data()
+
+    fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
+    catename = unquote(str(request.POST.get('catename'))).decode('utf-8')
+    type = unquote(str(request.POST.get('type'))).decode('utf-8')
+    if type == 'published':
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+    elif type == 'drafts':
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+    else:
+        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+    lines = []
+    tname = '  - ' + catename + '\n'
+
+    with open(path, 'r') as f:
+        istag = False
+        for line in f.readlines():
+            if istag == True:
+                if line.decode('utf-8') == tname:
+                    istag = False
+                else:
+                    lines.append(line.decode('utf-8'))
+            elif line[0:11] == 'categories:':
+                istag = True
+                lines.append(line.decode('utf-8'))
+            else:
+                lines.append(line.decode('utf-8'))
+
+    at = ''
+    for line in lines:
+        at += line
+    
+    with open(path, 'w') as f:
+        f.write(at.encode('utf-8'))
+    
+    success = True   
+
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/ajax.html',
+        {
+            'success':success,
+            'msg':msg,
+        }
+    )
+

@@ -17,6 +17,7 @@ import requests
 import hashlib
 import json
 from django.urls import reverse
+from goto import with_goto
 import sys
 import time
 import os
@@ -25,7 +26,7 @@ import public
 import data
 
 
-
+@with_goto
 def detail(request):
     SiteData = data.Site()
     HexoData = data.Data()
@@ -42,20 +43,42 @@ def detail(request):
     pinfo = ['', '', '', '']
     istext = False
     text = ''
+    istag = False
+    iscate = False
+    tags = []
+    catecories = []
     with open(path, 'r') as f:
         for line in f.readlines():
             p2 = line
             if istext == True:
                 text = text + p2
+            elif istag == True:
+                if p2[0:4] == '  - ':
+                    tags.append(p2[4:-1])
+                else:
+                    istag = False
+                    goto .adjust
+            elif iscate == True:
+                if p2[0:4] == '  - ':
+                    catecories.append(p2[4:-1])
+                else:
+                    #pass
+                    iscate = False
+                    goto .adjust
             else:
+                label .adjust
                 if p2 == '---\n':
                     istext = True
                 elif p2[0:5] == 'title':
-                    pinfo[0] = p2[7:]
+                    pinfo[0] = p2[7:-1]
                 elif p2[0:6] == 'author':
-                    pinfo[1] = p2[8:]
+                    pinfo[1] = p2[8:-1]
                 elif p2[0:4] == 'date':
-                    pinfo[2] = p2[6:]
+                    pinfo[2] = p2[6:-1]
+                elif p2[0:4] == 'tags':
+                    istag = True
+                elif p2[0:10] == 'categories':
+                    iscate = True
 
     assert isinstance(request, HttpRequest)
     return render(
@@ -69,6 +92,8 @@ def detail(request):
             'pinfo': pinfo,
             'text': text,
             'type': type,
+            'tags': tags,
+            'catecories': catecories,
             'HexoDir': SiteData.getwebconf('HexoDir'),
             'year':datetime.now().year,
         }

@@ -58,7 +58,6 @@ class Data:
                 return 1  
             else:  
                 return 0  
-
         list = []
         files = os.listdir(path)  
         for file in files:  
