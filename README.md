@@ -2,7 +2,7 @@
 
 这是一个使用Python为hexo写的管理页面，基于Django
 
-目前还在开发中（[开发日志](https://www.epis2048.net/categories/hexo-python-admin/ "开发日志")）
+目前还在开发中 [开发日志](https://www.epis2048.net/categories/hexo-python-admin/ "开发日志") / [最新日志（2018-3-20）](https://www.epis2048.net/2018/hexo-python-admin-updatelog-2018-3-20/ "最新日志（2018-3-20）")
 
 目前必须运行于和hexo部署的同一台服务器上面，远期可能会增加远程推送的功能
 
