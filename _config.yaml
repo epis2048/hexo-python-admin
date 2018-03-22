@@ -4,4 +4,4 @@ account:
 basic:
   admindir: !!python/unicode 'G:\\website\\myblog'
   hexodir: !!python/unicode 'G:\\website\\myblog\\blog'
-  staticurl: !!python/unicode 'https://epis2048.b0.upaiyun.com/hexo-python-admin/'
+  staticurl: !!python/unicode '//epis2048.b0.upaiyun.com/hexo-python-admin/'
