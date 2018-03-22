@@ -1,0 +1,85 @@
+{% extends "app/layout.html" %} {% block content %}
+
+<section class="content-header">
+    <h1>
+        Hexo设置
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'index' %}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        <li>
+            <a href="{% url 'hexo_index' %}"> Hexo设置 - 基础</a>
+        </li>
+    </ol>
+</section>
+<section class="content">
+    <div class="pull-right"></div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">基础
+            </h3>
+        </div>
+        </br>
+        <div class="box-body no-padding">
+            <table width="50%">
+                <tr>
+                    <td width="25%" style="text-align:right;">标题：</td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <input type="text" class="form-control" id="title" placeholder="" value="{{title2}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%" style="text-align:right;">副标题：</td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <input type="text" class="form-control" id="subtitle" placeholder="" value="{{subtitle}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%" style="text-align:right;">作者：</td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <input type="text" class="form-control" id="author" placeholder="" value="{{author}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%" style="text-align:right;"></td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <a href="javascript:update();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
+                            提交</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
+{%csrf_token %}
+<script>
+    function update(fid) {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_hexo_basic' %}",
+            {
+                title: encodeURI($('#title').val()),
+                subtitle: encodeURI($('#subtitle').val()),
+                author: encodeURI($('#author').val()),
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('成功！');
+                    window.location.href = '';
+                }
+                else {
+                    ShowMessage('失败！')
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+
+    }
+
+</script> {% endblock %}

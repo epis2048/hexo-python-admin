@@ -45,6 +45,15 @@
                             <li><a href="{% url 'admin_config' %}">系统配置</a></li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a href="{% url 'admin_index' %}" class="dropdown-toggle" data-toggle="dropdown">Hexo</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'hexo_publish' %}">发布</a></li>
+                            <li><a href="{% url 'hexo_index' %}">基础</a></li>
+                            <li><a href="{% url 'hexo_url' %}">URL</a></li>
+                            <li><a href="{% url 'hexo_theme' %}">主题</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
