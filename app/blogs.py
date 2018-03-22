@@ -35,7 +35,7 @@ def index(request):
     postlist = HexoData.Blogs_Get_List()
     for post in postlist:
         pinfo = ['', '', '', '']
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + post
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + post
         with open(path, 'r') as f:
             for line in f.readlines():
                 p2 = line
@@ -92,7 +92,7 @@ def drafts(request):
     postlist = HexoData.Drafts_Get_List()
     for post in postlist:
         pinfo = ['', '', '', '']
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + post
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + post
         with open(path, 'r') as f:
             for line in f.readlines():
                 p2 = line
@@ -133,11 +133,11 @@ def ajax_content(request):
     value = request.POST.get('value')
     type = request.GET.get('type')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     ftitle = ''
     with open(path, 'r+') as f:
         for line in f.readlines():
@@ -172,11 +172,11 @@ def ajax_info(request):
     fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
     type = request.GET.get('type')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
 
     lines = []
     with open(path, 'r') as f:
@@ -229,7 +229,7 @@ def ajax_add(request):
 
     stext = 'title: ' + title +'\nauthor: ' + author + '\ndate: ' + date + '\ntags: \n\ncategories: \n\n---\n'
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + filename
+    path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + filename
 
     with open(path, 'w') as f:
         f.write(stext.encode('utf-8'))
@@ -256,8 +256,8 @@ def ajax_publish(request):
 
     fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
-    path2 = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+    path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
+    path2 = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
 
     with open(path, 'r') as f:
         for line in f.readlines():
@@ -288,12 +288,12 @@ def ajax_del(request):
     SiteData = data.Site()
     type = request.GET.get('type')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
-    path2 = SiteData.getwebconf('HexoDir') + '\\source\\_trash\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
+    path2 = SiteData.getwebconf('HexoDir') + '/source/_trash/' + fid
     lines = ''
 
     with open(path, 'r') as f:
@@ -327,11 +327,11 @@ def ajax_tag_add(request):
     tagname = unquote(str(request.POST.get('tagname'))).decode('utf-8')
     type = unquote(str(request.POST.get('type'))).decode('utf-8')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     lines = []
     tname = '  - ' + tagname + '\n'
 
@@ -377,11 +377,11 @@ def ajax_tag_del(request):
     tagname = unquote(str(request.POST.get('tagname'))).decode('utf-8')
     type = unquote(str(request.POST.get('type'))).decode('utf-8')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     lines = []
     tname = '  - ' + tagname + '\n'
 
@@ -431,11 +431,11 @@ def ajax_cate_add(request):
     catename = unquote(str(request.POST.get('catename'))).decode('utf-8')
     type = unquote(str(request.POST.get('type'))).decode('utf-8')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     lines = []
     tname = '  - ' + catename + '\n'
 
@@ -481,11 +481,11 @@ def ajax_cate_del(request):
     catename = unquote(str(request.POST.get('catename'))).decode('utf-8')
     type = unquote(str(request.POST.get('type'))).decode('utf-8')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     lines = []
     tname = '  - ' + catename + '\n'
 

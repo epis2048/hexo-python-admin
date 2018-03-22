@@ -36,7 +36,7 @@ def index(request):
     pageinfo = []
     for page in pagelist:
         pinfo = ['', '', '']
-        path = SiteData.getwebconf('HexoDir') + '\\source\\' + page + '\\index.md'
+        path = SiteData.getwebconf('HexoDir') + '/source/' + page + '/index.md'
         if os.path.exists(path):
             with open(path, 'r') as f:
                 for line in f.readlines():
@@ -94,8 +94,8 @@ def ajax_add(request):
 
     stext = 'title: ' + title +'\ndate: ' + date + '\n---\n'
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\\source\\' + filename + '\\'
-    path2 = SiteData.getwebconf('HexoDir') + '\\source\\' + filename + '\\index.md'
+    path = SiteData.getwebconf('HexoDir') + '/source/' + filename + '/'
+    path2 = SiteData.getwebconf('HexoDir') + '/source/' + filename + '/index.md'
 
     if not os.path.exists(path):
         os.mkdir(path)
@@ -125,8 +125,8 @@ def ajax_del(request):
 
     fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\\source\\' + fid + '\\'
-    path2 = SiteData.getwebconf('HexoDir') + '\\source\\' + fid + '\\index.md'
+    path = SiteData.getwebconf('HexoDir') + '/source/' + fid + '/'
+    path2 = SiteData.getwebconf('HexoDir') + '/source/' + fid + '/index.md'
     
     os.remove(path2)
     os.rmdir(path)

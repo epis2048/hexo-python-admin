@@ -31,7 +31,7 @@ def index(request):
     if not public.checklogin(request):
         return HttpResponseRedirect('/login')
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\_config.yml'
+    path = SiteData.getwebconf('HexoDir') + '/_config.yml'
     line = ''
     title = ''
     subtitle = ''
@@ -64,7 +64,7 @@ def url(request):
     if not public.checklogin(request):
         return HttpResponseRedirect('/login')
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\_config.yml'
+    path = SiteData.getwebconf('HexoDir') + '/_config.yml'
     line = ''
     url = ''
     root = ''
@@ -97,7 +97,7 @@ def theme(request):
     if not public.checklogin(request):
         return HttpResponseRedirect('/login')
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\_config.yml'
+    path = SiteData.getwebconf('HexoDir') + '/_config.yml'
     line = ''
     theme = ''
     with open(path, 'r') as f:
@@ -123,7 +123,7 @@ def publish(request):
         return HttpResponseRedirect('/login')
     
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\hexo-deploy.sh'
+    path = SiteData.getwebconf('HexoDir') + '/hexo-deploy.sh'
     p2 = ''
 
     with open(path, 'r') as f:
@@ -153,7 +153,7 @@ def ajax_basic(request):
     author = unquote(str(request.POST.get('author'))).decode('utf-8')
 
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\_config.yml'
+    path = SiteData.getwebconf('HexoDir') + '/_config.yml'
     line = ''
     lines = ''
 
@@ -197,7 +197,7 @@ def ajax_url(request):
     permalink = unquote(str(request.POST.get('permalink'))).decode('utf-8')
 
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\_config.yml'
+    path = SiteData.getwebconf('HexoDir') + '/_config.yml'
     line = ''
     lines = ''
 
@@ -239,7 +239,7 @@ def ajax_theme(request):
     theme = unquote(str(request.POST.get('theme'))).decode('utf-8')
 
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\_config.yml'
+    path = SiteData.getwebconf('HexoDir') + '/_config.yml'
     line = ''
     lines = ''
 
@@ -275,7 +275,7 @@ def ajax_publish(request):
     msg = ''
     success = False
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '\hexo-deploy.sh'
+    path = SiteData.getwebconf('HexoDir') + '/hexo-deploy.sh'
 
     status = os.system('sh ' + path)
     msg = status

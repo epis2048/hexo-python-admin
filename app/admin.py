@@ -31,7 +31,7 @@ def index(request):
     if not public.checklogin(request):
         return HttpResponseRedirect('/login')
     SiteData = data.Site()
-    path = SiteData.getwebconf('ConfigFile') + '\_config.yaml'
+    path = SiteData.getwebconf('ConfigFile') + '/_config.yaml'
     config = []
     with open(path, 'r') as f:
         config = yaml.load(f)
@@ -53,7 +53,7 @@ def config(request):
     if not public.checklogin(request):
         return HttpResponseRedirect('/login')
     SiteData = data.Site()
-    path = SiteData.getwebconf('ConfigFile') + '\_config.yaml'
+    path = SiteData.getwebconf('ConfigFile') + '/_config.yaml'
     config = []
     with open(path, 'r') as f:
         config = yaml.load(f)
@@ -77,7 +77,7 @@ def ajax_setpw(request):
         return HttpResponseRedirect('/login')
 
     SiteData = data.Site()
-    path = SiteData.getwebconf('ConfigFile') + '\_config.yaml'
+    path = SiteData.getwebconf('ConfigFile') + '/_config.yaml'
     config = []
     with open(path, 'r') as f:
         config = yaml.load(f)
@@ -117,7 +117,7 @@ def ajax_basic(request):
         return HttpResponseRedirect('/login')
 
     SiteData = data.Site()
-    path = SiteData.getwebconf('ConfigFile') + '\_config.yaml'
+    path = SiteData.getwebconf('ConfigFile') + '/_config.yaml'
     config = []
     with open(path, 'r') as f:
         config = yaml.load(f)
