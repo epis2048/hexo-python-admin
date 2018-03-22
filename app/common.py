@@ -35,13 +35,13 @@ def detail(request):
     fid = request.GET.get('id')
     type = request.GET.get('type')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     elif type == 'page':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\' + fid + '\\index.md'
+        path = SiteData.getwebconf('HexoDir') + '/source/' + fid + '/index.md'
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     pinfo = ['', '', '', '']
     istext = False
     text = ''
@@ -113,13 +113,13 @@ def ajax_content(request):
     value = request.POST.get('value')
     type = request.GET.get('type')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     elif type == 'page':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\' + fid + '\\index.md'
+        path = SiteData.getwebconf('HexoDir') + '/source/' + fid + '/index.md'
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     ftitle = ''
     with open(path, 'r+') as f:
         for line in f.readlines():
@@ -154,13 +154,13 @@ def ajax_info(request):
     fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
     type = request.GET.get('type')
     if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
     elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
     elif type == 'page':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\' + fid + '\\index.md'
+        path = SiteData.getwebconf('HexoDir') + '/source/' + fid + '/index.md'
     else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
+        path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
 
     lines = []
     with open(path, 'r') as f:

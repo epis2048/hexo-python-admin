@@ -14,6 +14,7 @@ import app.common
 import app.blogs
 import app.pages
 import app.admin
+import app.hexo
 
 
 
@@ -51,6 +52,16 @@ urlpatterns = [
     url(r'^admin_config$', app.admin.config, name='admin_config'),
     url(r'^ajax_admin_setpw$', app.admin.ajax_setpw, name='ajax_admin_setpw'),
     url(r'^ajax_admin_basic$', app.admin.ajax_basic, name='ajax_admin_basic'),
+
+    #Hexo
+    url(r'^hexo_basic$', app.hexo.index, name='hexo_index'),
+    url(r'^hexo_url$', app.hexo.url, name='hexo_url'),
+    url(r'^hexo_theme$', app.hexo.theme, name='hexo_theme'),
+    url(r'^publish$', app.hexo.publish, name='hexo_publish'),
+    url(r'^ajax_hexo_basic$', app.hexo.ajax_basic, name='ajax_hexo_basic'),
+    url(r'^ajax_hexo_url$', app.hexo.ajax_url, name='ajax_hexo_url'),
+    url(r'^ajax_hexo_theme$', app.hexo.ajax_theme, name='ajax_hexo_theme'),
+    url(r'^ajax_publish$', app.hexo.ajax_publish, name='ajax_publish'),
 
     #公用
     url(r'^detail$', app.common.detail, name='blog_detail'),

@@ -10,7 +10,7 @@ import os
 
 class Site:
     def getwebconf(self, confname):
-        conffile = webset.ConfigFile + '\_config.yaml'
+        conffile = webset.ConfigFile + '/_config.yaml'
         config = []
         with open(conffile, 'r') as f:
             config = yaml.load(f)
@@ -32,7 +32,7 @@ class Data:
     
     def Blogs_Get_List(self):
         SiteConf = Site()
-        path = SiteConf.getwebconf('HexoDir') + '\\source\\_posts'
+        path = SiteConf.getwebconf('HexoDir') + '/source/_posts'
         def compare(x, y):  
             stat_x = os.stat(path + "/" + x)  
             stat_y = os.stat(path + "/" + y)  
@@ -49,13 +49,13 @@ class Data:
 
     def Drafts_Get_List(self):
         SiteConf = Site()
-        path = SiteConf.getwebconf('HexoDir') + '\\source\\_drafts'
+        path = SiteConf.getwebconf('HexoDir') + '/source/_drafts'
         files= os.listdir(path)
         return files
 
     def Pages_Get_List(self):
         SiteConf = Site()
-        path = SiteConf.getwebconf('HexoDir') + '\\source'
+        path = SiteConf.getwebconf('HexoDir') + '/source'
         def compare(x, y):  
             stat_x = os.stat(path + "/" + x + '/index.md')  
             stat_y = os.stat(path + "/" + y + '/index.md')  
