@@ -1,0 +1,85 @@
+{% extends "app/layout.html" %} {% block content %}
+
+<section class="content-header">
+    <h1>
+        管理页面设置
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'index' %}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        <li>
+            <a href="{% url 'admin_config' %}"> 系统配置</a>
+        </li>
+    </ol>
+</section>
+<section class="content">
+    <div class="pull-right"></div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">系统配置
+            </h3>
+        </div>
+        </br>
+        <div class="box-body no-padding">
+            <table width="50%">
+                <tr>
+                    <td width="25%" style="text-align:right;">Hexo目录：</td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <input type="text" class="form-control" id="hexodir" placeholder="" value="{{config.basic.hexodir}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%" style="text-align:right;">管理目录：</td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <input type="text" class="form-control" id="admindir" placeholder="" value="{{config.basic.admindir}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%" style="text-align:right;">静态文件目录：</td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <input type="text" class="form-control" id="staticurl" placeholder="" value="{{config.basic.staticurl}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%" style="text-align:right;"></td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <a href="javascript:update();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
+                            提交</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
+{%csrf_token %}
+<script>
+    function update(fid) {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_admin_basic' %}",
+            {
+                hexodir: encodeURI($('#hexodir').val()),
+                admindir: encodeURI($('#admindir').val()),
+                staticurl: encodeURI($('#staticurl').val()),
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('成功！');
+                    window.location.href = '';
+                }
+                else {
+                    ShowMessage('失败！')
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+
+    }
+
+</script> {% endblock %}

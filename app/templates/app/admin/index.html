@@ -1,0 +1,77 @@
+{% extends "app/layout.html" %} {% block content %}
+
+<section class="content-header">
+    <h1>
+        管理页面设置
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'index' %}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        <li>
+            <a href="{% url 'admin_index' %}"> 管理密码</a>
+        </li>
+    </ol>
+</section>
+<section class="content">
+    <div class="pull-right"></div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">管理密码
+            </h3>
+        </div>
+        </br>
+        <div class="box-body no-padding">
+            <table width="50%">
+                <tr>
+                    <td width="25%" style="text-align:right;">账号：</td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <input type="text" class="form-control" id="username" placeholder="" value="{{config.account.username}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%" style="text-align:right;">新密码：</td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <input type="text" class="form-control" id="password" placeholder="留空即不需要密码" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%" style="text-align:right;"></td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <a href="javascript:setpw();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
+                            提交</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
+{%csrf_token %}
+<script>
+    function setpw(fid) {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_admin_setpw' %}",
+            {
+                username: encodeURI($('#username').val()),
+                password: encodeURI($('#password').val()),
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('成功！');
+                    window.location.href = '';
+                }
+                else {
+                    ShowMessage('失败！')
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+
+    }
+
+</script> {% endblock %}
