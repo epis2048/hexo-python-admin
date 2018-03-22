@@ -36,19 +36,13 @@
 <script>
     function publish() {
         var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        ShowMessage('正在发布...');
         $.post("{% url 'ajax_publish' %}",
             {
                 csrfmiddlewaretoken: csrf
             },
             function (data, status) {
-                if (data == 'success') {
-                    ShowMessage('成功！');
-                    window.location.href = '';
-                }
-                else {
-                    ShowMessage('失败！')
-                    console.log(decodeURI(data));
-                };
+                ShowMessage('成功！');
             }
         );
 
