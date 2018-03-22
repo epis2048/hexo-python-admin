@@ -13,6 +13,7 @@ import app.views
 import app.common
 import app.blogs
 import app.pages
+import app.admin
 
 
 
@@ -24,6 +25,8 @@ import app.pages
 urlpatterns = [
 
     url(r'^$', app.views.index, name='index'),
+    url(r'^login$', app.views.login, name='login'),
+    url(r'^ajax_login$', app.views.ajax_login, name='ajax_login'),
 
     #文章
     url(r'^blogs$', app.blogs.index, name='blog_index'),
@@ -42,6 +45,12 @@ urlpatterns = [
     url(r'^page_add$', app.pages.add, name='page_add'),
     url(r'^ajax_page_add$', app.pages.ajax_add, name='ajax_page_add'),
     url(r'^ajax_page_del$', app.pages.ajax_del, name='ajax_page_del'),
+
+    #管理设置
+    url(r'^admin_account$', app.admin.index, name='admin_index'),
+    url(r'^admin_config$', app.admin.config, name='admin_config'),
+    url(r'^ajax_admin_setpw$', app.admin.ajax_setpw, name='ajax_admin_setpw'),
+    url(r'^ajax_admin_basic$', app.admin.ajax_basic, name='ajax_admin_basic'),
 
     #公用
     url(r'^detail$', app.common.detail, name='blog_detail'),
