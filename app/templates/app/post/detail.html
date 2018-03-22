@@ -236,7 +236,7 @@
             function (data, status) {
                 if (data == 'success') {
                     ShowMessage('发布成功！');
-                    window.location.href = '';
+                    window.location.href = '{{blog_detail}}?id='+fid+'&type=published';
                 }
                 else {
                     ShowMessage('发布失败！')
