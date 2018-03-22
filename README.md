@@ -2,7 +2,7 @@
 
 这是一个使用Python为hexo写的管理页面，基于Django
 
-目前还在开发中 [最新日志（2018-3-22）](https://www.epis2048.net/2018/hexo-python-admin-updatelog-2018-3-22/ "最新日志（2018-3-22）") / [TODO List](https://www.epis2048.net/2018/hpa-todo-list/ "TODO List") / 部署教程(尚未完工)
+目前还在开发中 [最新日志（2018-3-22）](https://www.epis2048.net/2018/hexo-python-admin-updatelog-2018-3-22/ "最新日志（2018-3-22）") / [TODO List](https://www.epis2048.net/2018/hpa-todo-list/ "TODO List") / [通过SSH部署](https://www.epis2048.net/2018/install-hexo-python-admin-through-ssh/ "通过SSH部署")
 
 目前必须运行于和hexo部署的同一台服务器上面，远期可能会增加远程推送的功能
 
