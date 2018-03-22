@@ -26,7 +26,7 @@ SECRET_KEY = 'fdb84a8b-7ffd-45a7-b01d-70e0c16b218e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.epis2048.net','localhost',]
+ALLOWED_HOSTS = ['127.0.0.1','localhost',]
 
 APPEND_SLASH = True
 
