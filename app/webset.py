@@ -1,2 +1,2 @@
 
-ConfigFile = 'G:\\website\\myblog'
+ConfigFile = '/home/wwwroot/blogadmin'
