@@ -62,7 +62,7 @@ def ajax_login(request):
     success = False
 
     SiteData = data.Site()
-    path = SiteData.getwebconf('ConfigFile') + '\_config.yaml'
+    path = SiteData.getwebconf('ConfigFile') + '/_config.yaml'
     config = []
     with open(path, 'r') as f:
         config = yaml.load(f)
