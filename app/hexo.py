@@ -275,9 +275,9 @@ def ajax_publish(request):
     msg = ''
     success = False
     SiteData = data.Site()
-    path = SiteData.getwebconf('HexoDir') + '/hexo-deploy.sh'
+    path = SiteData.getwebconf('HexoDir')
 
-    status = os.system('sh ' + path)
+    status = os.system('cd ' + path + ' && ' + 'hexo generate')
     msg = status
 
     assert isinstance(request, HttpRequest)
