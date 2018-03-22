@@ -27,6 +27,8 @@ import data
 
 
 def index(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     SiteData = data.Site()
     HexoData = data.Data()
 
@@ -64,6 +66,8 @@ def index(request):
     )
 
 def add(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     SiteData = data.Site()
     HexoData = data.Data()
 
@@ -79,6 +83,8 @@ def add(request):
     )
 
 def ajax_add(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
 
@@ -112,6 +118,8 @@ def ajax_add(request):
 
 
 def ajax_del(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
 

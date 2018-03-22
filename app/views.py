@@ -16,6 +16,7 @@ from urllib import unquote, urlencode
 import requests
 import hashlib
 import json
+import yaml
 from django.urls import reverse
 
 import public
@@ -26,6 +27,8 @@ import data
 
 def index(request):
     SiteDate = data.Site()
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
 
     assert isinstance(request, HttpRequest)
     return render(
@@ -39,3 +42,55 @@ def index(request):
             'year':datetime.now().year,
         }
     )
+
+def login(request):
+    SiteDate = data.Site()
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/login.html',
+        {
+            'title':'登录',
+            'staticurl': SiteDate.getwebconf('StaticFile'),
+            'year':datetime.now().year,
+        }
+    )
+
+def ajax_login(request):
+    msg = ''
+    success = False
+
+    SiteData = data.Site()
+    path = SiteData.getwebconf('ConfigFile') + '\_config.yaml'
+    config = []
+    with open(path, 'r') as f:
+        config = yaml.load(f)
+
+    username = unquote(str(request.POST.get('username'))).decode('utf-8')
+    password = unquote(str(request.POST.get('password'))).decode('utf-8')
+    if password == '' or password == 'None':
+        password = ''
+    else:
+        password = str(public.sha1pass(username, password))
+    
+    if str(username) == str(config['account']['username']):
+        if str(password) == str(config['account']['password']):
+            success = True
+        else:
+            msg = '密码错误'
+    else:
+        msg = '查无此人'
+    
+    assert isinstance(request, HttpRequest)
+    response = render(
+        request,
+        'app/ajax.html',
+        {
+            'success':success,
+            'msg':msg,
+        }
+    )
+    response.set_cookie('username',username)
+    response.set_cookie('password',password)
+    return response

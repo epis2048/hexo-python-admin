@@ -10,12 +10,19 @@ import os
 
 class Site:
     def getwebconf(self, confname):
+        conffile = webset.ConfigFile + '\_config.yaml'
+        config = []
+        with open(conffile, 'r') as f:
+            config = yaml.load(f)
+
         if confname == 'AdminDir':
-            return webset.AdminDir
+            return config['basic']['admindir']
         elif confname == 'HexoDir':
-            return webset.HexoDir
+            return config['basic']['hexodir']
         elif confname == 'StaticFile':
-            return webset.StaticFile
+            return config['basic']['staticurl']
+        elif confname == 'ConfigFile':
+            return webset.ConfigFile
 
 
 class Data:

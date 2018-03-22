@@ -27,6 +27,8 @@ import data
 
 
 def index(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     SiteData = data.Site()
     HexoData = data.Data()
     bloginfo = []
@@ -62,53 +64,9 @@ def index(request):
         }
     )
 
-def detail(request):
-    SiteData = data.Site()
-    HexoData = data.Data()
-    fid = request.GET.get('id')
-    type = request.GET.get('type')
-    if type == 'published':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
-    elif type == 'drafts':
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_drafts\\' + fid
-    else:
-        path = SiteData.getwebconf('HexoDir') + '\\source\\_posts\\' + fid
-    pinfo = ['', '', '', '']
-    istext = False
-    text = ''
-    with open(path, 'r') as f:
-        for line in f.readlines():
-            p2 = line
-            if istext == True:
-                text = text + p2
-            else:
-                if p2 == '---\n':
-                    istext = True
-                elif p2[0:5] == 'title':
-                    pinfo[0] = p2[7:]
-                elif p2[0:6] == 'author':
-                    pinfo[1] = p2[8:]
-                elif p2[0:4] == 'date':
-                    pinfo[2] = p2[6:]
-
-    assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/post/detail.html',
-        {
-            'title': pinfo[0],
-            'ConfigFile': SiteData.getwebconf('ConfigFile'),
-            'staticurl': SiteData.getwebconf('StaticFile'),
-            'fid': fid,
-            'pinfo': pinfo,
-            'text': text,
-            'type': type,
-            'HexoDir': SiteData.getwebconf('HexoDir'),
-            'year':datetime.now().year,
-        }
-    )
-
 def add(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     SiteData = data.Site()
     HexoData = data.Data()
     author = HexoData.getconfig('author')
@@ -126,6 +84,8 @@ def add(request):
     )
 
 def drafts(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     SiteData = data.Site()
     HexoData = data.Data()
     bloginfo = []
@@ -162,6 +122,8 @@ def drafts(request):
     )
 
 def ajax_content(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     success = False
     msg = ''
     #reload(sys)
@@ -198,6 +160,8 @@ def ajax_content(request):
     )
 
 def ajax_info(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
     title = unquote(str(request.POST.get('title'))).decode('utf-8')
@@ -253,6 +217,8 @@ def ajax_info(request):
     )
 
 def ajax_add(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
 
@@ -282,6 +248,8 @@ def ajax_add(request):
     )
 
 def ajax_publish(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
     lines = ''
@@ -311,6 +279,8 @@ def ajax_publish(request):
     )
 
 def ajax_del(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
 
@@ -346,6 +316,8 @@ def ajax_del(request):
     )
 
 def ajax_tag_add(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
     SiteData = data.Site()
@@ -394,6 +366,8 @@ def ajax_tag_add(request):
     )
 
 def ajax_tag_del(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
     SiteData = data.Site()
@@ -446,6 +420,8 @@ def ajax_tag_del(request):
     )
 
 def ajax_cate_add(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
     SiteData = data.Site()
@@ -494,6 +470,8 @@ def ajax_cate_add(request):
     )
 
 def ajax_cate_del(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
     SiteData = data.Site()

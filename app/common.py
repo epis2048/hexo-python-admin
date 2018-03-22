@@ -28,6 +28,8 @@ import data
 
 @with_goto
 def detail(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     SiteData = data.Site()
     HexoData = data.Data()
     fid = request.GET.get('id')
@@ -100,6 +102,8 @@ def detail(request):
     )
 
 def ajax_content(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     success = False
     msg = ''
     #reload(sys)
@@ -138,6 +142,8 @@ def ajax_content(request):
     )
 
 def ajax_info(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
     msg = ''
     success = False
     title = unquote(str(request.POST.get('title'))).decode('utf-8')
