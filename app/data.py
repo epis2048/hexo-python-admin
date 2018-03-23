@@ -23,6 +23,8 @@ class Site:
             return config['basic']['staticurl']
         elif confname == 'ConfigFile':
             return webset.ConfigFile
+        elif confname == 'https':
+            return config['https']
 
 
 class Data:

@@ -29,6 +29,8 @@ def index(request):
     SiteDate = data.Site()
     if not public.checklogin(request):
         return HttpResponseRedirect('/login')
+    
+    https = SiteDate.getwebconf('https')
 
     assert isinstance(request, HttpRequest)
     return render(
@@ -37,6 +39,7 @@ def index(request):
         {
             'title':'首页',
             'ConfigFile': SiteDate.getwebconf('ConfigFile'),
+            'https': https,
             'staticurl': SiteDate.getwebconf('StaticFile'),
             'HexoDir': SiteDate.getwebconf('HexoDir'),
             'year':datetime.now().year,

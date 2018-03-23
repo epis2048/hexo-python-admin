@@ -278,6 +278,37 @@ def ajax_publish(request):
         }
     )
 
+def ajax_unpublish(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
+    msg = ''
+    success = False
+    lines = ''
+
+    fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
+    SiteData = data.Site()
+    path = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
+    path2 = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
+
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            lines += line.decode('utf-8')
+    with open(path2, 'w') as f:
+        f.write(lines.encode('utf-8'))
+    os.remove(path)
+    success = True
+
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/ajax.html',
+        {
+            'success':success,
+            'msg':msg,
+        }
+    )
+
 def ajax_del(request):
     if not public.checklogin(request):
         return HttpResponseRedirect('/login')

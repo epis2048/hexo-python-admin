@@ -125,10 +125,15 @@ def ajax_basic(request):
     admindir = unquote(str(request.POST.get('admindir'))).decode('utf-8')
     hexodir = unquote(str(request.POST.get('hexodir'))).decode('utf-8')
     staticurl = unquote(str(request.POST.get('staticurl'))).decode('utf-8')
+    https = unquote(str(request.POST.get('https'))).decode('utf-8')
     
     config['basic']['admindir'] = admindir
     config['basic']['hexodir'] = hexodir
     config['basic']['staticurl'] = staticurl
+    if https == 'True':
+        config['https'] = True
+    else:
+        config['https'] = False
 
     text = yaml.dump(config, default_flow_style=False)
     
