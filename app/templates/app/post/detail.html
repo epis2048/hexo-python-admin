@@ -63,45 +63,35 @@
             <div class="tab-pane" id="tags">
                 <table width="100%">
                     <td width="49%" valign="top">
-                        <table id="" class="table table-hover">
+                        <table id="alltag" class="table table-hover">
                             <tbody>
                                 <tr>
                                     <td>
-                                        <b>标签</b>
+                                        <b>标签</b> <small>(<a href="javascript:showaddtag()">添加</a>)</small>
                                     </td>
                                 </tr>
                                 {% for row in tags %}
-                                <tr>
+                                <tr id="{{row}}">
                                     <td>{{row}} (<a href="javascript:checkdeltag('{{row}}')" style="color:red;">删除</a>)</td>
                                 </tr>
                                 {% endfor %}
-                                <tr>
-                                    <td>
-                                        <a href="javascript:showaddtag()">添加</a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </td>
                     <td width="2%"></td>
                     <td width="49%" valign="top">
-                        <table id="" class="table table-hover">
+                        <table id="allcate" class="table table-hover">
                             <tbody>
                                 <tr>
                                     <td>
-                                        <b>分类</b>
+                                        <b>分类</b> <small>(<a href="javascript:showaddcate()">添加</a>)</small>
                                     </td>
                                 </tr>
                                 {% for row in catecories %}
-                                <tr>
+                                <tr id="{{row}}">
                                     <td>{{row}} (<a href="javascript:checkdelcate('{{row}}')" style="color:red;">删除</a>)</td>
                                 </tr>
                                 {% endfor %}
-                                <tr>
-                                    <td>
-                                        <a href="javascript:showaddcate()">添加</a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </td>
@@ -290,9 +280,10 @@
 
     function addtag(){
         var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        tagname = $('#tagname').val();
         $.post("{% url 'ajax_blog_tag_add' %}",
             {
-                tagname: encodeURI($('#tagname').val()),
+                tagname: encodeURI(tagname),
                 fid: '{{fid}}',
                 type: '{{type}}',
                 csrfmiddlewaretoken: csrf
@@ -300,7 +291,10 @@
             function (data, status) {
                 if (data == 'success') {
                     ShowMessage('添加成功！');
-                    window.location.href = '';
+                    //window.location.href = '';
+                    var tr = '<tr id="'+tagname+'"><td>'+tagname+' (<a href="javascript:checkdeltag(\''+tagname+'\')" style="color:red;">删除</a>)</td></tr>';
+                    $("#alltag").append(tr);
+                    layer.closeAll();
                 }
                 else {
                     ShowMessage('添加失败！');
@@ -328,7 +322,8 @@
             function (data, status) {
                 if (data == 'success') {
                     ShowMessage('删除成功！');
-                    window.location.href = '';
+                    //window.location.href = '';
+                    $('#'+tagname).remove();
                 }
                 else {
                     ShowMessage('删除失败！');
@@ -347,15 +342,16 @@
             title:'添加分类',
             area:"40%",
             shadeClose: true, //开启遮罩关闭
-            content: '<input class="form-control" type="text" id="tagname" style="width:100%" placeholder="请输入分类名称"><input type="button" class="btn btn-primary btn-block btn-flat" onclick="addcate()" value="添加" />'
+            content: '<input class="form-control" type="text" id="catename" style="width:100%" placeholder="请输入分类名称"><input type="button" class="btn btn-primary btn-block btn-flat" onclick="addcate()" value="添加" />'
         });
     }
 
     function addcate(){
         var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        var catename = $('#catename').val();
         $.post("{% url 'ajax_blog_cate_add' %}",
             {
-                catename: encodeURI($('#tagname').val()),
+                catename: encodeURI(catename),
                 fid: '{{fid}}',
                 type: '{{type}}',
                 csrfmiddlewaretoken: csrf
@@ -363,7 +359,10 @@
             function (data, status) {
                 if (data == 'success') {
                     ShowMessage('添加成功！');
-                    window.location.href = '';
+                    //window.location.href = '';
+                    var tr = '<tr id="'+catename+'"><td>'+catename+' (<a href="javascript:checkdelcate(\''+catename+'\')" style="color:red;">删除</a>)</td></tr>';
+                    $("#allcate").append(tr);
+                    layer.closeAll();
                 }
                 else {
                     ShowMessage('添加失败！');
@@ -391,7 +390,8 @@
             function (data, status) {
                 if (data == 'success') {
                     ShowMessage('删除成功！');
-                    window.location.href = '';
+                    //window.location.href = '';
+                    $('#'+catename).remove();
                 }
                 else {
                     ShowMessage('删除失败！');
