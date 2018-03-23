@@ -48,6 +48,7 @@ def index(request):
 
 def login(request):
     SiteDate = data.Site()
+    https = SiteDate.getwebconf('https')
 
     assert isinstance(request, HttpRequest)
     return render(
@@ -55,6 +56,7 @@ def login(request):
         'app/login.html',
         {
             'title':'登录',
+            'https': https,
             'staticurl': SiteDate.getwebconf('StaticFile'),
             'year':datetime.now().year,
         }
