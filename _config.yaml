@@ -2,6 +2,7 @@ account:
   password: b62427e14dc0dd3f2895fda10c01279418ac50b4
   username: !!python/unicode 'hexo-python-admin'
 basic:
-  admindir: !!python/unicode 'G:\\website\\myblog'
-  hexodir: !!python/unicode 'G:\\website\\myblog\\blog'
+  admindir: !!python/unicode '/home/wwwroot/blog'
+  hexodir: !!python/unicode '/home/wwwroot/blogadmin'
   staticurl: !!python/unicode '//epis2048.b0.upaiyun.com/hexo-python-admin/'
+https: false
