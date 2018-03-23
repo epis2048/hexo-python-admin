@@ -46,6 +46,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <td width="25%" style="text-align:right;">管理页面强制HTTPS：</td>
+                    <td width="5%"></td>
+                    <td width="70%">
+                        <select class="form-control" id="https">
+                            <option value='True'{% if config.https == True %} selected{% endif %}>是</option>
+                            <option value='False'{% if config.https == False %} selected{% endif %}>否</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td width="25%" style="text-align:right;"></td>
                     <td width="5%"></td>
                     <td width="70%">
@@ -66,6 +76,7 @@
                 hexodir: encodeURI($('#hexodir').val()),
                 admindir: encodeURI($('#admindir').val()),
                 staticurl: encodeURI($('#staticurl').val()),
+                https: encodeURI($('#https').val()),
                 csrfmiddlewaretoken: csrf
             },
             function (data, status) {
