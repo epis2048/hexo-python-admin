@@ -1,4 +1,10 @@
 {% extends "app/layout.html" %} {% block content %}
+{% if https == True %}
+<script>
+    if (window.location.protocol != "https:")
+        window.location.protocol = "https";
+</script>
+{% endif %}
 <input type="text" class="form-control" id="username" placeholder="请输入用户名" value="">
 <input type="password" class="form-control" id="password" placeholder="请输入密码" value="">
 <a href="javascript:dologin();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">提交</a>
