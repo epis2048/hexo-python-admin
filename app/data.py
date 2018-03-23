@@ -27,8 +27,14 @@ class Site:
 
 class Data:
     def getconfig(self, confname):
+        SiteData = Site()
+        path = SiteData.getwebconf('HexoDir') + '/_config.yml'
+        config = []
+        with open(path, 'r') as f:
+            config = yaml.load(f)
+
         if confname == 'author':
-            return '吃着土豆坐地铁'
+            return config['author']
     
     def Blogs_Get_List(self):
         SiteConf = Site()
