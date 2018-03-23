@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^blog_add$', app.blogs.add, name='blog_add'),
     url(r'^ajax_blog_add$', app.blogs.ajax_add, name='ajax_blog_add'),
     url(r'^ajax_blog_publish$', app.blogs.ajax_publish, name='ajax_blog_publish'),
+    url(r'^ajax_blog_unpublish$', app.blogs.ajax_unpublish, name='ajax_blog_unpublish'),
     url(r'^ajax_blog_del$', app.blogs.ajax_del, name='ajax_blog_del'),
     url(r'^ajax_blog_tag_add$', app.blogs.ajax_tag_add, name='ajax_blog_tag_add'),
     url(r'^ajax_blog_tag_del$', app.blogs.ajax_tag_del, name='ajax_blog_tag_del'),
