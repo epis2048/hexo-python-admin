@@ -138,6 +138,10 @@
                                 <a href="javascript:publish();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
                                     发布</a>
                                 {% endif %}
+                                {% if type == 'published' %}
+                                <a href="javascript:unpublish();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
+                                    撤回</a>
+                                {% endif %}
                             </td>
                         </tr>
                     </tbody>
@@ -240,6 +244,29 @@
                 }
                 else {
                     ShowMessage('发布失败！')
+                    console.log(decodeURI(data));
+                };
+            }
+        );
+    }
+    {% endif %}
+
+    {% if type == 'published' %}
+    function unpublish() {
+        var fid = '{{fid}}';
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_blog_unpublish' %}",
+            {
+                fid: fid,
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('撤回成功！');
+                    window.location.href = '{{blog_detail}}?id='+fid+'&type=drafts';
+                }
+                else {
+                    ShowMessage('撤回失败！')
                     console.log(decodeURI(data));
                 };
             }
