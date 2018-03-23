@@ -1,5 +1,10 @@
-{% extends "app/layout.html" %} 
-{% block content %}
+{% extends "app/layout.html" %} {% block content %}
+{% if https == True %}
+<script>
+    if (window.location.protocol != "https:")
+        window.location.protocol = "https";
+</script>
+{% endif %}
 <h3>欢迎来到hexo管理后台...</h3>
 </br>
 {% endblock %}
