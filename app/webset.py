@@ -1,2 +1,2 @@
 
-ConfigFile = '/home/wwwroot/blogadmin'
+ConfigFile = '/home/wwwroot/blogadmin_config'
