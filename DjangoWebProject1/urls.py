@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^ajax_blog_publish$', app.blogs.ajax_publish, name='ajax_blog_publish'),
     url(r'^ajax_blog_unpublish$', app.blogs.ajax_unpublish, name='ajax_blog_unpublish'),
     url(r'^ajax_blog_del$', app.blogs.ajax_del, name='ajax_blog_del'),
+    url(r'^ajax_blog_rename$', app.blogs.ajax_rename, name='ajax_blog_rename'),
     url(r'^ajax_blog_tag_add$', app.blogs.ajax_tag_add, name='ajax_blog_tag_add'),
     url(r'^ajax_blog_tag_del$', app.blogs.ajax_tag_del, name='ajax_blog_tag_del'),
     url(r'^ajax_blog_cate_add$', app.blogs.ajax_cate_add, name='ajax_blog_cate_add'),
@@ -58,10 +59,12 @@ urlpatterns = [
     url(r'^hexo_basic$', app.hexo.index, name='hexo_index'),
     url(r'^hexo_url$', app.hexo.url, name='hexo_url'),
     url(r'^hexo_theme$', app.hexo.theme, name='hexo_theme'),
+    url(r'^hexo_edit$', app.hexo.edit, name='hexo_edit'),
     url(r'^publish$', app.hexo.publish, name='hexo_publish'),
     url(r'^ajax_hexo_basic$', app.hexo.ajax_basic, name='ajax_hexo_basic'),
     url(r'^ajax_hexo_url$', app.hexo.ajax_url, name='ajax_hexo_url'),
     url(r'^ajax_hexo_theme$', app.hexo.ajax_theme, name='ajax_hexo_theme'),
+    url(r'^ajax_hexo_edit$', app.hexo.ajax_edit, name='ajax_hexo_edit'),
     url(r'^ajax_publish$', app.hexo.ajax_publish, name='ajax_publish'),
 
     #公用
