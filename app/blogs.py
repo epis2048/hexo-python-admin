@@ -230,12 +230,14 @@ def ajax_add(request):
     stext = 'title: ' + title +'\nauthor: ' + author + '\ndate: ' + date + '\ntags: \n\ncategories: \n\n---\n'
     SiteData = data.Site()
     path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + filename
+    path2 = SiteData.getwebconf('HexoDir') + '/source/_posts/' + filename
 
-    with open(path, 'w') as f:
-        f.write(stext.encode('utf-8'))
-    
-    success = True
-
+    if os.path.exists(path) or os.path.exists(path2):
+        msg = '文件名已存在'
+    else:
+        with open(path, 'w') as f:
+            f.write(stext.encode('utf-8'))
+        success = True
 
     assert isinstance(request, HttpRequest)
     return render(
@@ -246,6 +248,45 @@ def ajax_add(request):
             'msg':msg,
         }
     )
+
+def ajax_rename(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
+    msg = ''
+    success = False
+
+    fid = unquote(str(request.POST.get('fid'))).decode('utf-8')
+    newfid = unquote(str(request.POST.get('new'))).decode('utf-8')
+    type = unquote(str(request.GET.get('type'))).decode('utf-8')
+
+    SiteData = data.Site()
+    if type == 'published':
+        oldpath = SiteData.getwebconf('HexoDir') + '/source/_posts/' + fid
+    else:
+        oldpath = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + fid
+    if type == 'published':
+        newpath = SiteData.getwebconf('HexoDir') + '/source/_posts/' + newfid
+    else:
+        newpath = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + newfid
+    path = SiteData.getwebconf('HexoDir') + '/source/_drafts/' + newfid
+    path2 = SiteData.getwebconf('HexoDir') + '/source/_posts/' + newfid
+
+    if os.path.exists(path) or os.path.exists(path2):
+        msg = '文件名已存在'
+    else:
+        os.rename(oldpath, newpath)
+        success = True
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/ajax.html',
+        {
+            'success':success,
+            'msg':msg,
+        }
+    )
+
 
 def ajax_publish(request):
     if not public.checklogin(request):

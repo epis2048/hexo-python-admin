@@ -118,6 +118,42 @@ def theme(request):
         }
     )
 
+def edit(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
+    type = request.GET.get('type')
+    SiteData = data.Site()
+    path = SiteData.getwebconf('HexoDir') + '/_config.yml'
+    lines = ''
+    line = ''
+    theme = ''
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            p2 = line
+            if p2[0:6] == 'theme:':
+                theme = p2[7:-1]
+            if type == 'site':
+                lines += p2
+    if type == 'theme':
+        path_theme = SiteData.getwebconf('HexoDir') + '/themes/' + theme + '/_config.yml'
+        with open(path_theme, 'r') as f:
+            for line in f.readlines():
+                lines += line
+
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/hexo/edit.html',
+        {
+            'title':'Hexo基础',
+            'type': type,
+            'content': lines,
+            'staticurl': SiteData.getwebconf('StaticFile'),
+            'year':datetime.now().year,
+        }
+    )
+
 def publish(request):
     if not public.checklogin(request):
         return HttpResponseRedirect('/login')
@@ -267,6 +303,45 @@ def ajax_theme(request):
             'msg':msg,
         }
     )
+
+def ajax_edit(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
+    msg = ''
+    success = False
+
+    type = request.GET.get('type')
+    content = unquote(str(request.POST.get('content'))).decode('utf-8')
+
+    SiteData = data.Site()
+    if type == 'theme':
+        path = SiteData.getwebconf('HexoDir') + '/_config.yml'
+        with open(path, 'r') as f:
+            for line in f.readlines():
+                p2 = line
+                if p2[0:6] == 'theme:':
+                    theme = p2[7:-1]
+                if type == 'site':
+                    lines += p2
+        path = SiteData.getwebconf('HexoDir') + '/themes/' + theme + '/_config.yml'
+    elif type == 'site':
+        path = SiteData.getwebconf('HexoDir') + '/_config.yml'
+    
+    with open(path, 'w') as f:
+        f.write(content.encode('utf-8'))
+    success = True
+
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/ajax.html',
+        {
+            'success':success,
+            'msg':msg,
+        }
+    )
+
 
 def ajax_publish(request):
     if not public.checklogin(request):
