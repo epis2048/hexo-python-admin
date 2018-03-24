@@ -1,0 +1,77 @@
+{% extends "app/layout.html" %} {% block content %}
+
+<link rel="stylesheet" href="{{staticurl}}/hexo/codemirror/lib/codemirror.css" />
+<script src="{{staticurl}}/hexo/codemirror/lib/codemirror.js"></script>
+<script src="{{staticurl}}/hexo/codemirror/clike.js"></script>
+<script src="{{staticurl}}/hexo/codemirror/mode/yaml/yaml.js"></script>
+<link rel="stylesheet" href="{{staticurl}}/hexo/codemirror/theme/dracula.css" />
+<link rel="stylesheet" href="{{staticurl}}/hexo/codemirror/addon/fold/foldgutter.css" />
+<script src="{{staticurl}}/hexo/codemirror/addon/fold/foldcode.js"></script>
+<script src="{{staticurl}}/hexo/codemirror/addon/fold/foldgutter.js"></script>
+<script src="{{staticurl}}/hexo/codemirror/addon/fold/brace-fold.js"></script>
+<script src="{{staticurl}}/hexo/codemirror/addon/fold/comment-fold.js"></script>
+<script src="{{staticurl}}/hexo/codemirror/addon/edit/matchbrackets.js"></script>
+
+<section class="content-header">
+    <h1>
+        Hexo设置
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'index' %}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        <li>
+            <a href="{% url 'hexo_edit' %}?type={{type}}"> Hexo设置 - {% if type == 'site' %}编辑Hexo配置{% elif type == 'theme' %}编辑主题配置{% endif %}</a>
+        </li>
+    </ol>
+</section>
+<section class="content">
+    <div class="pull-right"></div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">{% if type == 'site' %}编辑Hexo配置{% elif type == 'theme' %}编辑主题配置{% endif %}
+            </h3>
+        </div>
+        </br>
+        <div class="box-body no-padding">
+            <textarea id="code">{{content}}</textarea>
+            <a href="javascript:update();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">提交</a>
+        </div>
+    </div>
+</section>
+{%csrf_token %}
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: "text/yaml",
+        lineNumbers: true,
+        theme: "dracula",
+        lineWrapping: true,	
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        matchBrackets: true
+    });
+    editor.setSize('100%', '400px'); 
+
+    function update(fid) {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("{% url 'ajax_hexo_edit' %}?type={{type}}",
+            {
+                content: encodeURI(editor.getValue()),
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                if (data == 'success') {
+                    ShowMessage('成功！');
+                    //window.location.href = '';
+                }
+                else {
+                    ShowMessage('失败！')
+                    ShowMessage(decodeURI(data));
+                };
+            }
+        );
+
+    }
+
+</script> {% endblock %}
