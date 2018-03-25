@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^$', app.views.index, name='index'),
     url(r'^login$', app.views.login, name='login'),
     url(r'^ajax_login$', app.views.ajax_login, name='ajax_login'),
+    url(r'^logout$', app.views.logout, name='logout'),
 
     #文章
     url(r'^blogs$', app.blogs.index, name='blog_index'),
@@ -66,6 +67,7 @@ urlpatterns = [
     url(r'^ajax_hexo_theme$', app.hexo.ajax_theme, name='ajax_hexo_theme'),
     url(r'^ajax_hexo_edit$', app.hexo.ajax_edit, name='ajax_hexo_edit'),
     url(r'^ajax_publish$', app.hexo.ajax_publish, name='ajax_publish'),
+    url(r'^ajax_delpublish$', app.hexo.ajax_delpublish, name='ajax_delpublish'),
 
     #公用
     url(r'^detail$', app.common.detail, name='blog_detail'),
