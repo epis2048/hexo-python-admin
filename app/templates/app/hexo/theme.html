@@ -28,7 +28,11 @@
                     <td width="25%" style="text-align:right;">主题：</td>
                     <td width="5%"></td>
                     <td width="70%">
-                        <input type="text" class="form-control" id="theme" placeholder="" value="{{theme}}">
+                        <select id="theme" class="form-control">
+                            {% for row in allthemes %}
+                            <option value="{{row}}"{% if row == theme %} selected{% endif %}>{{row}}</option>
+                            {% endfor %}
+                        </select>
                     </td>
                 </tr>
                 <tr>

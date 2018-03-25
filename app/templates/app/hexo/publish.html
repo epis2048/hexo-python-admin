@@ -26,9 +26,8 @@
             <a href="javascript:publish();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
                 发布</a>
             </br>
-            <pre id="out">
-                输出...
-            </pre>
+            <a href="javascript:delpublish();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="">
+                清理</a>
         </div>
     </div>
 </section>
@@ -38,6 +37,20 @@
         var csrf = $('input[name="csrfmiddlewaretoken"]').val();
         ShowMessage('正在发布...');
         $.post("{% url 'ajax_publish' %}",
+            {
+                csrfmiddlewaretoken: csrf
+            },
+            function (data, status) {
+                ShowMessage('成功！');
+            }
+        );
+
+    }
+
+    function delpublish() {
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        ShowMessage('正在清理...');
+        $.post("{% url 'ajax_delpublish' %}",
             {
                 csrfmiddlewaretoken: csrf
             },
