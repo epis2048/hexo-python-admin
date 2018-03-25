@@ -62,6 +62,12 @@ def login(request):
         }
     )
 
+def logout(request):
+    response = HttpResponseRedirect(reverse('login'))
+    response.delete_cookie('username')
+    response.delete_cookie('password')
+    return response
+
 def ajax_login(request):
     msg = ''
     success = False

@@ -104,7 +104,10 @@ def theme(request):
         for line in f.readlines():
             p2 = line
             if p2[0:6] == 'theme:':
-                theme = p2[7:]
+                theme = p2[7:-1]
+    
+    path2 = SiteData.getwebconf('HexoDir') + '/themes/'
+    allthemes = os.listdir(path2)
 
     assert isinstance(request, HttpRequest)
     return render(
@@ -113,6 +116,7 @@ def theme(request):
         {
             'title':'Hexo基础',
             'theme': theme,
+            'allthemes': allthemes,
             'staticurl': SiteData.getwebconf('StaticFile'),
             'year':datetime.now().year,
         }
@@ -353,6 +357,28 @@ def ajax_publish(request):
     path = SiteData.getwebconf('HexoDir')
 
     status = os.system('cd ' + path + ' && ' + 'hexo generate')
+    msg = status
+
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/ajax.html',
+        {
+            'success':success,
+            'msg':msg,
+        }
+    )
+
+def ajax_delpublish(request):
+    if not public.checklogin(request):
+        return HttpResponseRedirect('/login')
+    
+    msg = ''
+    success = False
+    SiteData = data.Site()
+    path = SiteData.getwebconf('HexoDir')
+
+    status = os.system('cd ' + path + ' && ' + 'hexo clean')
     msg = status
 
     assert isinstance(request, HttpRequest)
